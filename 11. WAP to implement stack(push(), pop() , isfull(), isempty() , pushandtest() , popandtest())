@@ -1,0 +1,71 @@
+#include <stdio.h>
+#define MAX 10
+struct Stack {
+int arr[MAX];
+int top;
+};
+int isFull(struct Stack* pstk) {
+return pstk->top == MAX - 1;
+}
+int isEmpty(struct Stack* pstk) {
+return pstk->top == -1;
+}
+void push(struct Stack* pstk, int val) {
+if (isFull(pstk)) {
+printf("Overflow\n");
+return;
+}
+pstk->arr[++pstk->top] = val;
+}
+int pop(struct Stack* pstk) {
+if (isEmpty(pstk)) {
+printf("Underflow\n");
+return -1;
+}
+int item = pstk->arr[pstk->top];
+pstk->arr[pstk->top--] = 0;
+return item;
+}
+int top(struct Stack* pstk) {
+if (isEmpty(pstk)) {
+printf("Stack is empty\n");
+return -1;
+}
+return pstk->arr[pstk->top];
+}
+void pushAndTest(struct Stack* pstk, int val) {
+if (isFull(pstk)) {
+
+printf("Stack is full. Cannot push %d\n", val);
+} else {
+push(pstk, val);
+printf("Pushed %d\n", val);
+}
+}
+
+void popAndTest(struct Stack* pstk) {
+int item = pop(pstk);
+if (item != -1) {
+printf("Popped %d\n", item);
+}
+}
+int main() {
+struct Stack stk;
+stk.top = -1;
+pushAndTest(&stk, 10);
+pushAndTest(&stk, 20);
+pushAndTest(&stk, 30);
+pushAndTest(&stk, 40);
+pushAndTest(&stk, 50);
+int topElement = top(&stk);
+if (topElement != -1) {
+printf("Top element is: %d\n", topElement);
+}
+popAndTest(&stk);
+popAndTest(&stk);
+topElement = top(&stk);
+if (topElement != -1) {
+printf("Top element after pop is: %d\n", topElement);
+}
+return 0;
+}
