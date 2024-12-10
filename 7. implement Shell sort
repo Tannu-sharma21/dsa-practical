@@ -1,0 +1,41 @@
+#include<stdio.h>
+
+void shell_sort(int arr[], int n, int gap[], int gap_size){
+for(int k = gap_size - 1; k >= 0; k--){
+int span = gap[k];
+for(int i=1; i<n; i++){
+int temp = arr[i];
+int j;
+for(j = i; j > 0; j-=span){
+if(temp < arr[j-span]){
+arr[j] = arr[j-span];
+}
+else break;
+}
+arr[j] = temp;
+}
+}
+}
+
+void printArr(int arr[], int n){
+for(int i=0; i<n; i++){
+printf("%d ", arr[i]);
+}
+printf("\n");
+}
+
+int main(){
+int arr[] = {15, 12, 5, 7, 9,18, 21, 25, 29, 32, 16, 18, 13, 17};
+int n = sizeof(arr)/sizeof(int);
+int gap[] = {1,2,3,4};
+int gap_size = sizeof(gap)/sizeof(int);
+
+printf("Array before sorting : ");
+printArr(arr, n);
+
+shell_sort(arr, n, gap, gap_size);
+
+printf("\nArray after sorting : ");
+printArr(arr, n);
+
+}
