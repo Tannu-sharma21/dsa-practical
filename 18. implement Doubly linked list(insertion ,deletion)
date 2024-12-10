@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+int data;
+struct Node* next;
+struct Node* prev;
+};
+void insertAtBeginning(struct Node** head, int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->next = *head;
+newNode->prev = NULL;
+if (*head != NULL) {
+(*head)->prev = newNode;
+}
+*head = newNode;
+}
+void insertAtEnd(struct Node** head, int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+struct Node* temp = *head;
+newNode->data = value;
+newNode->next = NULL;
+if (*head == NULL) {
+newNode->prev = NULL;
+*head = newNode;
+return;
+}
+while (temp->next != NULL) {
+temp = temp->next;
+}
+temp->next = newNode;
+newNode->prev = temp;
+}
+void deleteFromBeginning(struct Node** head) {
+if (*head == NULL) {
+printf("List is empty\n");
+
+return;
+}
+struct Node* temp = *head;
+*head = (*head)->next;
+if (*head != NULL) {
+(*head)->prev = NULL;
+}
+free(temp);
+}
+void deleteFromEnd(struct Node** head) {
+if (*head == NULL) {
+printf("List is empty\n");
+return;
+}
+struct Node* temp = *head;
+while (temp->next != NULL) {
+temp = temp->next;
+}
+if (temp->prev != NULL) {
+temp->prev->next = NULL;
+}
+free(temp);
+}
+void display(struct Node* head) {
+struct Node* temp = head;
+while (temp != NULL) {
+printf("%d ", temp->data);
+temp = temp->next;
+}
+printf("\n");
+}
+int main() {
+struct Node* head = NULL;
+insertAtBeginning(&head, 10);
+insertAtEnd(&head, 20);
+insertAtEnd(&head, 30);
+
+printf("List after insertion: ");
+display(head);
+deleteFromBeginning(&head);
+printf("List after deletion from beginning: ");
+display(head);
+deleteFromEnd(&head);
+printf("List after deletion from end: ");
+display(head);
+return 0;
+}
