@@ -1,0 +1,130 @@
+#include<stdio.h>
+#include <stdlib.h>
+struct Node{
+int data;
+struct Node* next;
+};
+
+struct Node* createNode(int val){
+struct Node* temp = (struct Node*) malloc(sizeof(struct Node));
+temp->data = val;
+temp->next = NULL;
+return temp;
+}
+
+// Insertion
+void insertionAtHead(struct Node** head, int val){
+struct Node *newNode = createNode(val);
+if(*head){
+newNode->next = *head;
+*head = newNode;
+}
+else{
+*head = newNode;
+}
+}
+void insertionAtEnd(struct Node** head, int val){
+struct Node* newNode = createNode(val);
+if(*head == NULL){
+*head = newNode;
+}
+else{
+struct Node* temp = *head;
+while(temp->next){
+temp = temp->next;
+}
+temp->next = newNode;
+}
+}
+
+void insertAfter(struct Node** head, int val, int target){
+struct Node* newNode = createNode(val);
+struct Node* temp = *head;
+while(temp && temp->data != target){
+temp = temp->next;
+}
+if(temp){
+newNode->next = temp->next;
+temp->next = newNode;
+}
+else{
+printf("Node with value %d not found\n", target);
+}
+}
+
+void insertBefore(struct Node** head, int val, int target){
+struct Node* newNode = createNode(val);
+struct Node* prev = NULL;
+struct Node* curr = *head;
+// handle first node
+if(curr->data == target){
+newNode->next = curr;
+*head = newNode;
+return;
+}
+else{
+while(curr && curr->data != target){
+prev = curr;
+curr = curr->next;
+}
+if(curr == NULL){
+printf("Node with value %d not found\n", val);
+free(newNode);
+}
+else{
+newNode->next = curr;
+prev->next = newNode;
+}
+}
+}
+
+// __________________________________
+void deleteNode(struct Node** head, int tar){
+struct Node* prev = NULL;
+struct Node* curr = *head;
+// first Node
+if(curr->data == tar){
+curr = curr->next;
+*head = curr;
+free(curr);
+return;
+}
+while(curr && curr->data != tar){
+prev = curr;
+curr = curr->next;
+}
+prev->next = curr->next;
+curr->next = NULL;
+free(curr);
+}
+
+// Printing LL
+void printLL(struct Node* head){
+struct Node* temp = head;
+while(temp){
+printf("%d ",temp->data);
+temp = temp->next;
+}
+printf("\n");
+}
+
+int main(){
+struct Node* root;
+root = NULL;
+insertionAtHead(&root, 10);
+insertionAtHead(&root, 20);
+insertionAtHead(&root, 30);
+insertionAtEnd(&root, 40);
+printLL(root);
+
+insertAfter(&root, 134, 20);
+printLL(root);
+insertBefore(&root, 11, 40);
+insertBefore(&root, 11, 30);
+insertBefore(&root, 11, 134);
+printLL(root);
+deleteNode(&root, 20);
+printLL(root);
+
+return 0;
+}
