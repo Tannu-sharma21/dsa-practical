@@ -1,0 +1,57 @@
+#include<stdio.h>
+#define MAX 20
+struct Stack{
+char arr[100];
+int top;
+};
+
+void push(struct Stack *pstk, int val){
+if(pstk->top == MAX-1){
+printf("Overflow");
+return;
+}
+pstk->top = pstk->top+1;
+pstk->arr[pstk->top] = val;
+}
+int pop(struct Stack *pstk){
+if(pstk->top == -1){
+printf("Underflow");
+return -1;
+}
+int item = pstk->arr[pstk->top];
+pstk->arr[pstk->top] = 0;
+pstk->top = pstk->top-1;
+return item;
+}
+
+void balanced(struct Stack *pstk, char str[]){
+int i=0;
+while(str[i] != '\0'){
+char ch = str[i];
+if(ch == '(' || ch == '[' || ch == '{'){
+push(pstk, ch);
+}
+else{
+if(ch == ')' && pstk->arr[pstk->top] == '(') pop(pstk);
+if(ch == ']' && pstk->arr[pstk->top] == '[') pop(pstk);
+if(ch == '}' && pstk->arr[pstk->top] == '{') pop(pstk);
+
+}
+i++;
+}
+if(pstk->top != -1){
+printf("Not balanced");
+}
+else{
+printf("Balanced");
+}
+}
+
+int main(){
+struct Stack stk;
+stk.top = -1;
+char str[] = "({[]}[))"; // ()[][()]
+balanced(&stk, str);
+
+return 0;
+}
